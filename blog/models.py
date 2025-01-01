@@ -22,8 +22,10 @@ class Post(models.Model):
     
 class Comment(models.Model):
     author = models.CharField(max_length=60)
+    email = models.EmailField(max_length=150)
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
+    ip = models.GenericIPAddressField(protocol='both', null=False, blank=False)
     post = models.ForeignKey("Post", on_delete=models.CASCADE)
 
     def __str__(self):

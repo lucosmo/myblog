@@ -22,6 +22,9 @@
             {{ form.author }}
         </div>
         <div>
+            {{ form.email }}
+        </div>
+        <div>
             {{ form.body }}
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -30,7 +33,7 @@
     <h3>Comments:</h3>
     {% for comment in comments %}
         <p>
-            On {{ comment.created_on.date }} <b>{{ comment.author }}</b> wrote:
+            On {{ comment.created_on.date }} <b>{{ comment.author }}</b> ({{ comment.email }}) wrote:
         </p>
         <p>
             {{ comment.body | linebreaks }}

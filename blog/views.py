@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from blog.models import Post, Comment
 from blog.forms import CommentForm
+from blog.utils import get_client_ip
 
 def blog_index(request):
     posts = Post.objects.all().order_by("-created_on")
@@ -29,6 +30,7 @@ def blog_detail(request, pk):
             comment = Comment(
                 author=form.cleaned_data["author"],
                 body=form.cleaned_data["body"],
+                ip = get_client_ip(request),
                 post=post,
             )
             comment.save()

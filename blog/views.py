@@ -30,7 +30,10 @@ def blog_detail(request, pk):
             comment = Comment(
                 author=form.cleaned_data["author"],
                 body=form.cleaned_data["body"],
+                email=form.cleaned_data["email"],
                 ip = get_client_ip(request),
+                user_agent = request.META.get('HTTP_USER_AGENT', ''),
+                referrer = request.META.get('HTTP_REFERER', ''),
                 post=post,
             )
             comment.save()

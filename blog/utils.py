@@ -1,7 +1,8 @@
+from ipware import get_client_ip as ipware_get_client_ip
+
 def get_client_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0].strip()
+    client_ip, is_routable = ipware_get_client_ip(request)
+    if client_ip:
+        return client_ip
     else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip
+        return '0.0.0.0'

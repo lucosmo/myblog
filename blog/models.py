@@ -26,6 +26,8 @@ class Comment(models.Model):
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     ip = models.GenericIPAddressField(protocol='both', null=False, blank=False)
+    user_agent = models.CharField(max_length=255, null=True, blank=True)
+    referrer = models.URLField(null=True, blank=True)
     post = models.ForeignKey("Post", on_delete=models.CASCADE)
 
     def __str__(self):

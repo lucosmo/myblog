@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.utils.html import escape
 from django.shortcuts import render, get_object_or_404
-from blog.models import Post, Comment
+from blog.models import Post, Comment, Category
 from django.views.decorators.csrf import csrf_protect
 from blog.forms import CommentForm
 from blog.utils import get_client_ip
@@ -9,8 +9,15 @@ from blog.utils import get_client_ip
 @csrf_protect
 def blog_index(request):
     posts = Post.objects.all().order_by("-created_on")
+    categories = Category.objects.all()
+    recent_posts = Post.objects.all().order_by("-created_on")[:5]
+    popular_posts = Post.objects.filter(popular=True).order_by("-views")[:5]
+
     context = {
         "posts": posts,
+        "categories": categories,
+        "recent_posts": recent_posts,
+        "popular_posts": popular_posts,
     }
     return render(request, "blog/index.html", context)
 

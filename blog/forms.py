@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.html import escape
 
 class CommentForm(forms.Form):
     author = forms.CharField(
@@ -18,3 +19,15 @@ class CommentForm(forms.Form):
             attrs={"class": "form-control", "placeholder": "Leave a comment!"}
         )
     )
+
+    def clean_author(self):
+        author = self.cleaned_data.get("author")
+        return escape(author)
+
+    def clean_body(self):
+        body = self.cleaned_data.get("body")
+        return escape(body)
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        return escape(email)

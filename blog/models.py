@@ -1,4 +1,5 @@
 from django.db import models
+from html import escape
 
 # Create your models here.
 class Category(models.Model):
@@ -33,3 +34,12 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.author} on '{self.post}'"
+    
+    def save(self, *args, **kwargs):
+        self.author = escape(self.author)
+        self.body = escape(self.body)
+        self.email = escape(self.email)
+        self.user_agent = escape(self.user_agent)
+        self.referrer = escape(self.referrer)
+
+        super().save(*args, **kwargs)

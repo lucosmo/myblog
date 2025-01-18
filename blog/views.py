@@ -1,9 +1,12 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.utils.html import escape
+from django.shortcuts import render, get_object_or_404
 from blog.models import Post, Comment
+from django.views.decorators.csrf import csrf_protect
 from blog.forms import CommentForm
 from blog.utils import get_client_ip
 
+@csrf_protect
 def blog_index(request):
     posts = Post.objects.all().order_by("-created_on")
     context = {
@@ -11,18 +14,21 @@ def blog_index(request):
     }
     return render(request, "blog/index.html", context)
 
+@csrf_protect
 def blog_category(request, category):
+    safe_category = escape(category)
     posts = Post.objects.filter(
-        categories__name__contains=category
+        categories__name__contains=safe_category
     ).order_by("-created_on")
     context = {
-        "category": category,
+        "category": safe_category,
         "posts": posts,
     }
     return render(request, "blog/category.html", context)
 
+@csrf_protect
 def blog_detail(request, pk):
-    post = Post.objects.get(pk=pk)
+    post = get_object_or_404(Post, pk=pk)
     form = CommentForm()
     if request.method == "POST":
         form = CommentForm(request.POST)

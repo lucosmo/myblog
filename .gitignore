@@ -172,3 +172,4 @@ cython_debug/
 
 # This project's staticfiles folder
 staticfiles/
+media/

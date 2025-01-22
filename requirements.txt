@@ -1,6 +1,12 @@
 asgiref==3.8.1
 Django==5.1.4
 django-ipware==7.0.1
+django-js-asset==3.0.1
+django-tinymce==4.1.0
+jsmin==3.0.1
+packaging==24.2
+pillow==11.1.0
+pipdeptree==2.24.0
 python-dotenv==1.0.1
 python-ipware==3.0.0
 sqlparse==0.5.3

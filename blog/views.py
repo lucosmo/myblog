@@ -1,10 +1,17 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.utils.html import escape
 from django.shortcuts import render, get_object_or_404
 from blog.models import Post, Comment, Category
 from django.views.decorators.csrf import csrf_protect
 from blog.forms import CommentForm
 from blog.utils import get_client_ip
+from .models import UploadedImage 
+from django.views.decorators.csrf import csrf_exempt
+import uuid
+from PIL import Image
+from io import BytesIO
+from django.core.files.base import ContentFile
+
 
 
 @csrf_protect
@@ -63,3 +70,40 @@ def blog_detail(request, pk):
     }
 
     return render(request, "blog/detail.html", context)
+
+import os
+from django.conf import settings
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def upload_image(request):
+    if request.method == 'POST':
+        image = request.FILES.get('file')
+        if image:
+            extension = os.path.splitext(image.name)[1]
+            random_filename = f"{uuid.uuid4().hex}{extension}"
+
+            upload_dir = os.path.join(settings.MEDIA_ROOT, 'uploads')
+            os.makedirs(upload_dir, exist_ok=True)
+            file_path = os.path.join(upload_dir, random_filename)
+
+            try:
+                img = Image.open(image)
+                img.thumbnail((800, 800))
+
+                buffer = BytesIO()
+                img.save(buffer, format=img.format)
+                buffer.seek(0)
+
+                with open(file_path, 'wb+') as destination:
+                    destination.write(buffer.read())
+
+                file_url = f"{settings.MEDIA_URL}uploads/{random_filename}"
+
+                return JsonResponse({'location': file_url})
+            except Exception as e:
+                return JsonResponse({'error': f"Error processing image: {str(e)}"}, status=500)
+
+        return JsonResponse({'error': 'No file uploaded'}, status=400)
+    return JsonResponse({'error': 'Invalid request'}, status=400)

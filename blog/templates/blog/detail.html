@@ -1,4 +1,12 @@
 {% extends "base.html" %}
+{% load static %}
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'shared/css/prism.css' %}">
+{% endblock extra_head %}
+
+{% block extra_js %}
+    <script src="{% static 'shared/js/prism.js' %}"></script>
+{% endblock extra_js %}
 
 {% block page_title %}
     <h2>{{ post.title }}</h2>
@@ -13,7 +21,7 @@
             </a>
         {% endfor %}
     </small>
-    <p>{{ post.body | linebreaks }}</p>
+    <p>{{ post.body | safe }}</p>
 
     <h3>Leave a comment:</h3>
     <form method="post">

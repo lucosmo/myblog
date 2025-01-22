@@ -1,6 +1,7 @@
 from django.contrib import admin
-
+from django import forms
 from blog.models import Category, Comment, Post
+from tinymce.widgets import TinyMCE
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -8,7 +9,11 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class PostAdmin(admin.ModelAdmin):
-    pass
+    body = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
+
+    class Meta:
+        model = Post
+        fields = '__all__'
 
 
 class CommentAdmin(admin.ModelAdmin):

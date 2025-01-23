@@ -1,6 +1,7 @@
 from django import forms
 from django.utils.html import escape
 
+
 class CommentForm(forms.Form):
     author = forms.CharField(
         max_length=60,

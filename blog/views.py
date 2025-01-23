@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_protect
 from blog.forms import CommentForm
 from blog.utils import get_client_ip
 
+
 @csrf_protect
 def blog_index(request):
     posts = Post.objects.all().order_by("-created_on")
@@ -21,17 +22,19 @@ def blog_index(request):
     }
     return render(request, "blog/index.html", context)
 
+
 @csrf_protect
 def blog_category(request, category):
     safe_category = escape(category)
-    posts = Post.objects.filter(
-        categories__name__contains=safe_category
-    ).order_by("-created_on")
+    posts = Post.objects.filter(categories__name__contains=safe_category).order_by(
+        "-created_on"
+    )
     context = {
         "category": safe_category,
         "posts": posts,
     }
     return render(request, "blog/category.html", context)
+
 
 @csrf_protect
 def blog_detail(request, pk):
@@ -44,14 +47,14 @@ def blog_detail(request, pk):
                 author=form.cleaned_data["author"],
                 body=form.cleaned_data["body"],
                 email=form.cleaned_data["email"],
-                ip = get_client_ip(request),
-                user_agent = request.META.get('HTTP_USER_AGENT', ''),
-                referrer = request.META.get('HTTP_REFERER', ''),
+                ip=get_client_ip(request),
+                user_agent=request.META.get("HTTP_USER_AGENT", ""),
+                referrer=request.META.get("HTTP_REFERER", ""),
                 post=post,
             )
             comment.save()
             return HttpResponseRedirect(request.path_info)
-        
+
     comments = Comment.objects.filter(post=post, active=True)
     context = {
         "post": post,

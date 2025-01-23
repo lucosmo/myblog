@@ -1,6 +1,7 @@
 from django.db import models
 from html import escape
 
+
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=30)
@@ -10,6 +11,7 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Post(models.Model):
     title = models.CharField(max_length=255)
@@ -22,13 +24,14 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
-    
+
+
 class Comment(models.Model):
     author = models.CharField(max_length=60)
     email = models.EmailField(max_length=150)
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
-    ip = models.GenericIPAddressField(protocol='both', null=False, blank=False)
+    ip = models.GenericIPAddressField(protocol="both", null=False, blank=False)
     user_agent = models.CharField(max_length=255, null=True, blank=True)
     referrer = models.URLField(null=True, blank=True)
     active = models.BooleanField(default=False)
@@ -36,7 +39,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.author} on '{self.post}'"
-    
+
     def save(self, *args, **kwargs):
         self.author = escape(self.author)
         self.body = escape(self.body)

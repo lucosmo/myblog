@@ -16,7 +16,7 @@ class Category(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=255)
-    body = HTMLField() 
+    body = HTMLField()
     created_on = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
     categories = models.ManyToManyField("Category", related_name="posts")
@@ -50,6 +50,7 @@ class Comment(models.Model):
 
         super().save(*args, **kwargs)
 
+
 class UploadedImage(models.Model):
-    image = models.ImageField(upload_to='uploads/')
+    image = models.ImageField(upload_to="uploads/")
     uploaded_at = models.DateTimeField(auto_now_add=True)

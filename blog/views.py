@@ -1,7 +1,7 @@
 import os
 import uuid
-from io import BytesIO
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect, JsonResponse
 from django.utils.html import escape
 from django.shortcuts import render, get_object_or_404
@@ -93,13 +93,13 @@ def blog_detail(request, pk):
 
 @csrf_exempt
 def upload_image(request):
-    if request.method == "POST":
-        image = request.FILES.get("file")
+    if request.method == 'POST':
+        image = request.FILES.get('file')
         if image:
             extension = os.path.splitext(image.name)[1]
             random_filename = f"{uuid.uuid4().hex}{extension}"
 
-            upload_dir = os.path.join(settings.MEDIA_ROOT, "uploads")
+            upload_dir = os.path.join(settings.MEDIA_ROOT, 'uploads')
             os.makedirs(upload_dir, exist_ok=True)
             file_path = os.path.join(upload_dir, random_filename)
 
@@ -111,16 +111,14 @@ def upload_image(request):
                 img.save(buffer, format=img.format)
                 buffer.seek(0)
 
-                with open(file_path, "wb+") as destination:
+                with open(file_path, 'wb+') as destination:
                     destination.write(buffer.read())
 
                 file_url = f"{settings.MEDIA_URL}uploads/{random_filename}"
 
-                return JsonResponse({"location": file_url})
+                return JsonResponse({'location': file_url})
             except Exception as e:
-                return JsonResponse(
-                    {"error": f"Error processing image: {str(e)}"}, status=500
-                )
+                return JsonResponse({'error': f"Error processing image: {str(e)}"}, status=500)
 
-        return JsonResponse({"error": "No file uploaded"}, status=400)
-    return JsonResponse({"error": "Invalid request"}, status=400)
+        return JsonResponse({'error': 'No file uploaded'}, status=400)
+    return JsonResponse({'error': 'Invalid request'}, status=400)

@@ -9,11 +9,11 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class PostAdmin(admin.ModelAdmin):
-    body = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
+    body = forms.CharField(widget=TinyMCE(attrs={"cols": 80, "rows": 30}))
 
     class Meta:
         model = Post
-        fields = '__all__'
+        fields = "__all__"
 
 
 class CommentAdmin(admin.ModelAdmin):

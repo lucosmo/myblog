@@ -36,15 +36,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'ipware',
-    'tinymce',
-    'blog.apps.BlogConfig',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "ipware",
+    "tinymce",
+    "blog.apps.BlogConfig",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
 ]
 
 MIDDLEWARE = [
@@ -125,26 +125,26 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 # Media files (uploads)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media/'
-STATIC_ROOT = BASE_DIR / 'staticfiles/'
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media/"
+STATIC_ROOT = BASE_DIR / "staticfiles/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 TINYMCE_DEFAULT_CONFIG = {
     "plugins": "image code",
     "toolbar": "undo redo | bold italic | alignleft aligncenter alignright alignjustify | image code",
     "image_upload_url": "/upload/image/",
-    "extended_valid_elements": "pre[class],code[class]", 
+    "extended_valid_elements": "pre[class],code[class]",
     "automatic_uploads": True,
     "file_picker_types": "image",
-    "relative_urls": False,  
-    "remove_script_host": False, 
+    "relative_urls": False,
+    "remove_script_host": False,
     "file_picker_callback": """
         function(callback, value, meta) {
             if (meta.filetype === 'image') {
@@ -161,7 +161,7 @@ TINYMCE_DEFAULT_CONFIG = {
                     xhr.onload = function() {
                         if (xhr.status === 200) {
                             var json = JSON.parse(xhr.responseText);
-                            callback(json.location); 
+                            callback(json.location);
                         } else {
                             alert('Image upload failed!');
                         }
@@ -171,7 +171,5 @@ TINYMCE_DEFAULT_CONFIG = {
                 input.click();
             }
         }
-    """
+    """,
 }
-
-

@@ -3,17 +3,73 @@
 <head>
     <meta charset="utf-8">
     <title>My Personal Blog</title>
-    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     {% load static %}
     <link rel="stylesheet" href="{% static 'shared/css/prism.css' %}">
-    <script src="{% static 'shared/js/prism.js' %}"></script>
-
 </head>
 <body>
-<h1>My Personal Blog</h1>
-<a href="{% url "blog_index" %}">Home</a>
-<hr>
-{% block page_title %}{% endblock page_title %}
-{% block page_content %}{% endblock page_content %}
+    <header class="bg-dark text-white py-3">
+        <div class="container">
+            <h1 class="h3 mb-3">My Personal Blog</h1>
+            <nav>
+                <a href="{% url 'blog_index' %}" class="text-white text-decoration-none">Home</a>
+            </nav>
+        </div>
+    </header>
+    <div class="container my-4">
+        <div class="row">
+            <main class="col-lg-8 col-md-12">
+                {% block page_content %}{% endblock page_content %}
+            </main>
+            <aside class="col-lg-4 col-md-12 mt-4 mt-lg-0">
+                <div class="mb-4">
+                    <h5>Search</h5>
+                    <form action="/search" method="get">
+                        <div class="input-group">
+                            <input type="text" name="q" class="form-control" placeholder="Search...">
+                            <button class="btn btn-primary" type="submit">Go</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="mb-4">
+                    <h5>Popular Posts</h5>
+                    <ul class="list-group">
+                        {% for post in popular_posts %}
+                            <li class="list-group-item">
+                                <a href="{% url 'blog_detail' post.pk %}">{{ post.title }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="mb-4">
+                    <h5>Recent Posts</h5>
+                    <ul class="list-group">
+                        {% for post in recent_posts %}
+                            <li class="list-group-item">
+                                <a href="{% url 'blog_detail' post.pk %}">{{ post.title }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="mb-4">
+                    <h5>Categories</h5>
+                    <ul class="list-group">
+                        {% for category in categories %}
+                            <li class="list-group-item">
+                                <a href="{% url 'blog_category' category.name %}">{{ category.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+    <footer class="bg-dark text-white py-4 mt-4">
+        <div class="container text-center">
+            <p>&copy; 2025 My Personal Blog. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'shared/js/prism.js' %}"></script>
 </body>
 </html>

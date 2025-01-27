@@ -13,8 +13,7 @@ from PIL import Image
 from io import BytesIO
 
 
-@csrf_protect
-def blog_index(request):
+def create_side_column_context():
     posts = Post.objects.all().order_by("-created_on")
     categories = Category.objects.all()
     recent_posts = Post.objects.all().order_by("-created_on")[:5]
@@ -26,6 +25,11 @@ def blog_index(request):
         "recent_posts": recent_posts,
         "popular_posts": popular_posts,
     }
+    return context
+
+@csrf_protect
+def blog_index(request):
+    context = create_side_column_context()
     return render(request, "blog/index.html", context)
 
 
@@ -39,6 +43,9 @@ def blog_category(request, category):
         "category": safe_category,
         "posts": posts,
     }
+    side_column_context = create_side_column_context()
+    side_column_context.pop("posts")
+    context.update(side_column_context)
     return render(request, "blog/category.html", context)
 
 
@@ -67,7 +74,8 @@ def blog_detail(request, pk):
         "comments": comments,
         "form": CommentForm(),
     }
-
+    side_column_context = create_side_column_context()
+    context.update(side_column_context)
     return render(request, "blog/detail.html", context)
 
 

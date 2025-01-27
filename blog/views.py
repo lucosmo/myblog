@@ -27,6 +27,7 @@ def create_side_column_context():
     }
     return context
 
+
 @csrf_protect
 def blog_index(request):
     context = create_side_column_context()

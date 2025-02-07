@@ -21,7 +21,8 @@ class Post(models.Model):
     last_modified = models.DateTimeField(auto_now=True)
     categories = models.ManyToManyField("Category", related_name="posts")
     popular = models.BooleanField(default=False)
-    views = models.PositiveIntegerField(default=0)
+    total_views = models.PositiveIntegerField(default=0)
+    unique_views = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title
@@ -54,3 +55,10 @@ class Comment(models.Model):
 class UploadedImage(models.Model):
     image = models.ImageField(upload_to="uploads/")
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+class SiteStats(models.Model):
+    homepage_unique_views = models.PositiveIntegerField(default=0)
+    homepage_total_views = models.PositiveIntegerField(default=0)
+    
+    def __str__(self):
+        return "Main site stats."

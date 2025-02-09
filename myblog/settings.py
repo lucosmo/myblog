@@ -140,6 +140,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOCATION = os.environ.get("REDIS_LOCATION")
+REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
 
 if DEBUG:
     CACHES = {
@@ -154,6 +155,7 @@ else:
             'LOCATION': LOCATION,
             'OPTIONS': {
                 'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+                'REDIS_PASSWORD': REDIS_PASSWORD,
             }
         }
     }

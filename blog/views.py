@@ -31,13 +31,13 @@ def create_side_column_context():
 
 @csrf_protect
 def blog_index(request):
-    if not request.session.get('visited_homepage'):
+    if not request.session.get("visited_homepage"):
         stats, created = SiteStats.objects.get_or_create(pk=1)
         stats.homepage_unique_views += 1
         stats.save()
-        request.session['visited_homepage'] = True
+        request.session["visited_homepage"] = True
 
-    homepage_total_key = 'homepage_total_views'
+    homepage_total_key = "homepage_total_views"
     if cache.get(homepage_total_key) is None:
         cache.set(homepage_total_key, 0)
     try:
@@ -85,14 +85,14 @@ def blog_detail(request, pk):
             comment.save()
             return HttpResponseRedirect(request.path_info)
 
-    visited_posts = request.session.get('visited_posts', [])
+    visited_posts = request.session.get("visited_posts", [])
     if post.pk not in visited_posts:
         post.unique_views += 1
         visited_posts.append(post.pk)
-        request.session['visited_posts'] = visited_posts
+        request.session["visited_posts"] = visited_posts
         post.save()
 
-    post_total_key = f'post_total_views_{post.pk}'
+    post_total_key = f"post_total_views_{post.pk}"
     if cache.get(post_total_key) is None:
         cache.set(post_total_key, 0)
     try:

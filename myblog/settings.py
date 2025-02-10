@@ -35,7 +35,7 @@ if DEBUG:
 else:
     allowed_hosts_env = ALLOWED_HOSTS_ENV
     if allowed_hosts_env:
-        ALLOWED_HOSTS = allowed_hosts_env.split(',')
+        ALLOWED_HOSTS = allowed_hosts_env.split(",")
     else:
         ALLOWED_HOSTS = []
 
@@ -148,19 +148,19 @@ REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
 
 if DEBUG:
     CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
         }
     }
 else:
     CACHES = {
-        'default': {
-            'BACKEND': 'django_redis.cache.RedisCache',
-            'LOCATION': LOCATION,
-            'OPTIONS': {
-                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-                'REDIS_PASSWORD': REDIS_PASSWORD,
-            }
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": LOCATION,
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+                "REDIS_PASSWORD": REDIS_PASSWORD,
+            },
         }
     }
 

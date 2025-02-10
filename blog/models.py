@@ -56,9 +56,10 @@ class UploadedImage(models.Model):
     image = models.ImageField(upload_to="uploads/")
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
+
 class SiteStats(models.Model):
     homepage_unique_views = models.PositiveIntegerField(default=0)
     homepage_total_views = models.PositiveIntegerField(default=0)
-    
+
     def __str__(self):
         return "Main site stats."

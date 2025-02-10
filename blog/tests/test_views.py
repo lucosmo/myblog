@@ -11,7 +11,7 @@ from io import BytesIO
 
 
 def add_session_to_request(request):
-    middleware = SessionMiddleware()
+    middleware = SessionMiddleware(get_response=lambda req: None)
     middleware.process_request(request)
     request.session.save()
 

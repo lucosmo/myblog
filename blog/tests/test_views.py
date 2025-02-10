@@ -1,11 +1,19 @@
 import pytest
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.contrib.sessions.middleware import SessionMiddleware
 from django.conf import settings
 from django.test import RequestFactory
 from blog.models import Post, SiteStats
+from blog.views import blog_index
 from PIL import Image
 from io import BytesIO
+
+
+def add_session_to_request(request):
+    middleware = SessionMiddleware()
+    middleware.process_request(request)
+    request.session.save()
 
 
 @pytest.fixture(autouse=True)
@@ -67,10 +75,13 @@ class TestBlogIndexView:
 
     def test_blog_index_view(self, mocker):
         request = self.factory.get("/")
-        request.session = {}
+
+        add_session_to_request(request)
 
         mock_cache = mocker.patch("blog.views.cache")
         mock_cache.get.return_value = None
+
+        _ = blog_index(request)
 
         assert request.session.get("visited_homepage") is True
 

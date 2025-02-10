@@ -5,7 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect, JsonResponse
 from django.utils.html import escape
 from django.shortcuts import render, get_object_or_404
-from blog.models import Post, Comment, Category
+from django.core.cache import cache
+from blog.models import Post, Comment, Category, SiteStats
 from django.views.decorators.csrf import csrf_protect
 from blog.forms import CommentForm
 from blog.utils import get_client_ip
@@ -17,7 +18,7 @@ def create_side_column_context():
     posts = Post.objects.all().order_by("-created_on")
     categories = Category.objects.all()
     recent_posts = Post.objects.all().order_by("-created_on")[:5]
-    popular_posts = Post.objects.filter(popular=True).order_by("-views")[:5]
+    popular_posts = Post.objects.filter(popular=True).order_by("-total_views")[:5]
 
     context = {
         "posts": posts,
@@ -30,6 +31,21 @@ def create_side_column_context():
 
 @csrf_protect
 def blog_index(request):
+    if not request.session.get("visited_homepage"):
+        stats, created = SiteStats.objects.get_or_create(pk=1)
+        stats.homepage_unique_views += 1
+        stats.save()
+        request.session["visited_homepage"] = True
+
+    homepage_total_key = "homepage_total_views"
+    if cache.get(homepage_total_key) is None:
+        cache.set(homepage_total_key, 0)
+    try:
+        cache.incr(homepage_total_key)
+    except ValueError:
+        current = cache.get(homepage_total_key)
+        cache.set(homepage_total_key, current + 1)
+
     context = create_side_column_context()
     return render(request, "blog/index.html", context)
 
@@ -68,6 +84,22 @@ def blog_detail(request, pk):
             )
             comment.save()
             return HttpResponseRedirect(request.path_info)
+
+    visited_posts = request.session.get("visited_posts", [])
+    if post.pk not in visited_posts:
+        post.unique_views += 1
+        visited_posts.append(post.pk)
+        request.session["visited_posts"] = visited_posts
+        post.save()
+
+    post_total_key = f"post_total_views_{post.pk}"
+    if cache.get(post_total_key) is None:
+        cache.set(post_total_key, 0)
+    try:
+        cache.incr(post_total_key)
+    except ValueError:
+        current = cache.get(post_total_key)
+        cache.set(post_total_key, current + 1)
 
     comments = Comment.objects.filter(post=post, active=True)
     context = {

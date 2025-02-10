@@ -29,8 +29,15 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG") == "True"
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS_ENV = os.environ.get("ALLOWED_HOSTS")
+if DEBUG:
+    ALLOWED_HOSTS = []
+else:
+    allowed_hosts_env = ALLOWED_HOSTS_ENV
+    if allowed_hosts_env:
+        ALLOWED_HOSTS = allowed_hosts_env.split(",")
+    else:
+        ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -135,6 +142,27 @@ STATIC_ROOT = BASE_DIR / "staticfiles/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOCATION = os.environ.get("REDIS_LOCATION")
+REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
+
+if DEBUG:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        }
+    }
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": LOCATION,
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+                "REDIS_PASSWORD": REDIS_PASSWORD,
+            },
+        }
+    }
 
 TINYMCE_DEFAULT_CONFIG = {
     "plugins": "image code",

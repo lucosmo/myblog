@@ -156,10 +156,9 @@ else:
     CACHES = {
         "default": {
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": LOCATION,
+            "LOCATION": f"{LOCATION}&password={REDIS_PASSWORD}",
             "OPTIONS": {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
-                "REDIS_PASSWORD": REDIS_PASSWORD,
             },
         }
     }

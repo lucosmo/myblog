@@ -1,11 +1,19 @@
 from django.db import models
 from html import escape
 from tinymce.models import HTMLField
+from django.utils.text import slugify
 
 
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=30)
+    slug = models.SlugField(unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name.replace("&", " and "))
+        super().save(*args, **kwargs)
+
 
     class Meta:
         verbose_name_plural = "categories"

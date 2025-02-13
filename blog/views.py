@@ -51,13 +51,13 @@ def blog_index(request):
 
 
 @csrf_protect
-def blog_category(request, category):
-    safe_category = escape(category)
-    posts = Post.objects.filter(categories__name__contains=safe_category).order_by(
+def blog_category(request, category_slug):
+    category = get_object_or_404(Category, slug=category_slug)
+    posts = Post.objects.filter(categories__name__contains=category).order_by(
         "-created_on"
     )
     context = {
-        "category": safe_category,
+        "category": category,
         "posts": posts,
     }
     side_column_context = create_side_column_context()

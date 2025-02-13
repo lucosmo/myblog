@@ -14,7 +14,6 @@ class Category(models.Model):
             self.slug = slugify(self.name.replace("&", " and "))
         super().save(*args, **kwargs)
 
-
     class Meta:
         verbose_name_plural = "categories"
 
@@ -46,7 +45,7 @@ class Post(models.Model):
             self.slug = unique_slug
 
         super().save(*args, **kwargs)
-        
+
     def __str__(self):
         return self.title
 

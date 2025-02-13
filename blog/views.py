@@ -3,7 +3,6 @@ import uuid
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect, JsonResponse
-from django.utils.html import escape
 from django.shortcuts import render, get_object_or_404
 from django.core.cache import cache
 from blog.models import Post, Comment, Category, SiteStats

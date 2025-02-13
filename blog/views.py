@@ -67,8 +67,8 @@ def blog_category(request, category_slug):
 
 
 @csrf_protect
-def blog_detail(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+def blog_detail(request, slug):
+    post = get_object_or_404(Post, slug=slug)
     form = CommentForm()
     if request.method == "POST":
         form = CommentForm(request.POST)

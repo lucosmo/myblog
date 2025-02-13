@@ -5,7 +5,7 @@
 {% endblock page_title %}
 
 {% block page_content %}
-    <h3><a href="{% url 'blog_detail' post.pk %}" class="text-decoration-none">{{ post.title }}</a></h3>
+    <h3><a href="{% url 'blog_detail' post.slug %}" class="text-decoration-none">{{ post.title }}</a></h3>
     <small class="text-muted">
         {{ post.created_on.date }} | Categories:
         {% for category in post.categories.all %}

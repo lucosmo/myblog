@@ -8,7 +8,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'shared/css/prism.css' %}">
 </head>
-<body>
+<body data-bs-theme="dark">
     <header class="bg-dark text-white py-3">
         <div class="container">
             <h1 class="h3 mb-3">My Personal Blog</h1>
@@ -27,8 +27,8 @@
                     <h5>Search</h5>
                     <form action="/search" method="get">
                         <div class="input-group">
-                            <input type="text" name="q" class="form-control" placeholder="Search...">
-                            <button class="btn btn-primary" type="submit">Go</button>
+                            <input type="text" name="q" class="form-control bg-dark text-muted border-secondary" placeholder="Search...">
+                            <button class="btn btn-outline-light border-secondary" type="submit">Go</button>
                         </div>
                     </form>
                 </div>
@@ -36,8 +36,8 @@
                     <h5>Popular Posts</h5>
                     <ul class="list-group">
                         {% for post in popular_posts %}
-                            <li class="list-group-item">
-                                <a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a>
+                            <li class="list-group-item list-group-item-dark">
+                                <a href="{% url 'blog_detail' post.slug %}" class="text-muted">{{ post.title }}</a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -46,8 +46,8 @@
                     <h5>Recent Posts</h5>
                     <ul class="list-group">
                         {% for post in recent_posts %}
-                            <li class="list-group-item">
-                                <a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a>
+                            <li class="list-group-item list-group-item-dark">
+                                <a href="{% url 'blog_detail' post.slug %}" class="text-muted">{{ post.title }}</a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -56,8 +56,8 @@
                     <h5>Categories</h5>
                     <ul class="list-group">
                         {% for category in categories %}
-                            <li class="list-group-item">
-                                <a href="{% url 'blog_category' category.slug %}">{{ category.name }}</a>
+                            <li class="list-group-item list-group-item-dark">
+                                <a href="{% url 'blog_category' category.slug %}" class="text-muted">{{ category.name }}</a>
                             </li>
                         {% endfor %}
                     </ul>

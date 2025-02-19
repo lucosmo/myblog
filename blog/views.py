@@ -3,7 +3,6 @@ import uuid
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect, JsonResponse
-from django.utils.html import escape
 from django.shortcuts import render, get_object_or_404
 from django.core.cache import cache
 from blog.models import Post, Comment, Category, SiteStats
@@ -51,13 +50,13 @@ def blog_index(request):
 
 
 @csrf_protect
-def blog_category(request, category):
-    safe_category = escape(category)
-    posts = Post.objects.filter(categories__name__contains=safe_category).order_by(
+def blog_category(request, category_slug):
+    category = get_object_or_404(Category, slug=category_slug)
+    posts = Post.objects.filter(categories__name__contains=category).order_by(
         "-created_on"
     )
     context = {
-        "category": safe_category,
+        "category": category,
         "posts": posts,
     }
     side_column_context = create_side_column_context()
@@ -67,8 +66,8 @@ def blog_category(request, category):
 
 
 @csrf_protect
-def blog_detail(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+def blog_detail(request, slug):
+    post = get_object_or_404(Post, slug=slug)
     form = CommentForm()
     if request.method == "POST":
         form = CommentForm(request.POST)

@@ -37,7 +37,7 @@
                     <ul class="list-group">
                         {% for post in popular_posts %}
                             <li class="list-group-item">
-                                <a href="{% url 'blog_detail' post.pk %}">{{ post.title }}</a>
+                                <a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -47,7 +47,7 @@
                     <ul class="list-group">
                         {% for post in recent_posts %}
                             <li class="list-group-item">
-                                <a href="{% url 'blog_detail' post.pk %}">{{ post.title }}</a>
+                                <a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -57,7 +57,7 @@
                     <ul class="list-group">
                         {% for category in categories %}
                             <li class="list-group-item">
-                                <a href="{% url 'blog_category' category.name %}">{{ category.name }}</a>
+                                <a href="{% url 'blog_category' category.slug %}">{{ category.name }}</a>
                             </li>
                         {% endfor %}
                     </ul>

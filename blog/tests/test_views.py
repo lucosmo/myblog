@@ -58,8 +58,9 @@ def test_post_detail_rendering(client):
             "<pre class='line-numbers'><code class='language-python'>"
             "print('Hello, world!')</code></pre>"
         ),
+        slug="test-post"
     )
-    url = reverse("blog_detail", args=[post.pk])
+    url = reverse("blog_detail", args=[post.slug])
     response = client.get(url)
 
     assert response.status_code == 200

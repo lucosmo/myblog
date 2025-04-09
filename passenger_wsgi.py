@@ -6,12 +6,9 @@ from django.core.wsgi import get_wsgi_application
 
 load_dotenv()
 
+sys.path.append(os.getcwd())
 
 DJANGO_SETTINGS_MODULE = os.environ.get("DJANGO_SETTINGS_MODULE")
-
-sys.path.append(os.getcwd())
-os.environ["DJANGO_SETTINGS_MODULE"] = DJANGO_SETTINGS_MODULE
-
 
 def application(environ, start_response):
     environ["PATH_INFO"] = (

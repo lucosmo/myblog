@@ -33,9 +33,8 @@ ALLOWED_HOSTS_ENV = os.environ.get("ALLOWED_HOSTS")
 if DEBUG:
     ALLOWED_HOSTS = []
 else:
-    allowed_hosts_env = ALLOWED_HOSTS_ENV
-    if allowed_hosts_env:
-        ALLOWED_HOSTS = allowed_hosts_env.split(",")
+    if ALLOWED_HOSTS_ENV:
+        ALLOWED_HOSTS = ALLOWED_HOSTS_ENV.split(",")
     else:
         ALLOWED_HOSTS = []
 
